@@ -4,6 +4,7 @@ from pprint import pprint
 from types import MethodType
 from ats.lang import get_lang
 from wcwidth import wcswidth
+from typing import List
 
 def is_notebook() -> bool:
     try:
@@ -193,8 +194,20 @@ class TextFile:
     title: str
     def name(self):
         return self.title
-    def text(self, *args, **kwargs):
-        return [TextParagraph(path=self.path, idx=i, content=o, references=[]) for i, v in enumerate(Path(self.path).read_text().split('\n')) if (o := v.strip()) != '']
+    def text(self, *args, **kwargs) -> List["TextParagraph"]:
+            with open(self.path, 'r', encoding='utf-8') as file:
+                lines = file.readlines()
+            
+            return [
+                TextParagraph(
+                    path=self.path,
+                    idx=i,
+                    content=o,
+                    references=[]
+                )
+                for i, v in enumerate(lines)
+                if (o := v.strip()) != ''
+            ]
 
 def flatten(t):
     if isinstance(t, epub.Link):
