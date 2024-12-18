@@ -206,7 +206,7 @@ class TextFile:
                     references=[]
                 )
                 for i, v in enumerate(lines)
-                if (o := v.strip()) != ''
+                if (o := v.strip() + " ") != ''
             ]
 
 def flatten(t):
